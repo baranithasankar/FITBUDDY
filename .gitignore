@@ -1,0 +1,23 @@
+# Virtual environments
+venv/
+fitbuddy-env/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE / Editor files
+.vscode/
+.idea/
+.DS_Store
