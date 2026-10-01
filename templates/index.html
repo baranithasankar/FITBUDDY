@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBuddy – AI Fitness Plan Generator</title>
+  <link rel="stylesheet" href="/static/style.css?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand-logo">
+      <div class="brand-icon"><i class="fa-solid fa-dumbbell"></i></div>
+      Fit<span>Buddy</span>
+    </a>
+    <div class="nav-links">
+      <a href="/view-all-users" class="nav-btn nav-btn-secondary">
+        <i class="fa-solid fa-users-gear"></i> Admin View
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <span class="hero-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Powered by Gemini AI</span>
+      <h1>Personalized 7-Day Fitness Plans</h1>
+      <p>Enter your profile details below to generate a tailored workout routine and smart recovery guidance instantly.</p>
+    </section>
+
+    <!-- Error Alert -->
+    {% if error %}
+    <div class="alert alert-danger">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>{{ error }}</span>
+    </div>
+    {% endif %}
+
+    <!-- Input Form Glass Card -->
+    <section class="glass-card">
+      <form action="/generate-workout" method="POST">
+        <div class="form-grid">
+
+          <!-- Name / Username -->
+          <div class="form-group">
+            <label for="username"><i class="fa-solid fa-user"></i> Full Name / Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="e.g. Alex Morgan" value="{{ form_data.username if form_data else '' }}" required>
+          </div>
+
+          <!-- User ID -->
+          <div class="form-group">
+            <label for="user_id"><i class="fa-solid fa-id-card"></i> User ID</label>
+            <input type="text" id="user_id" name="user_id" class="form-control" placeholder="e.g. FIT-101" value="{{ form_data.user_id if form_data else '' }}" required>
+          </div>
+
+          <!-- Age -->
+          <div class="form-group">
+            <label for="age"><i class="fa-solid fa-cake-candles"></i> Age (Years)</label>
+            <input type="number" id="age" name="age" class="form-control" min="10" max="100" placeholder="e.g. 25" value="{{ form_data.age if form_data else '' }}" required>
+          </div>
+
+          <!-- Weight -->
+          <div class="form-group">
+            <label for="weight"><i class="fa-solid fa-weight-scale"></i> Weight (kg)</label>
+            <input type="number" step="0.1" id="weight" name="weight" class="form-control" min="20" max="250" placeholder="e.g. 70" value="{{ form_data.weight if form_data else '' }}" required>
+          </div>
+
+          <!-- Fitness Goal -->
+          <div class="form-group">
+            <label for="goal"><i class="fa-solid fa-bullseye"></i> Fitness Goal</label>
+            <select id="goal" name="goal" class="form-control" required>
+              <option value="" disabled {% if not form_data %}selected{% endif %}>Select your primary goal</option>
+              <option value="Weight Loss" {% if form_data and form_data.goal == 'Weight Loss' %}selected{% endif %}>🔥 Weight Loss</option>
+              <option value="Muscle Gain" {% if form_data and form_data.goal == 'Muscle Gain' %}selected{% endif %}>💪 Muscle Gain</option>
+              <option value="General Wellness" {% if form_data and form_data.goal == 'General Wellness' %}selected{% endif %}>🏃 General Wellness & Stamina</option>
+              <option value="Endurance Building" {% if form_data and form_data.goal == 'Endurance Building' %}selected{% endif %}>⚡ Endurance Building</option>
+              <option value="Flexibility & Core" {% if form_data and form_data.goal == 'Flexibility & Core' %}selected{% endif %}>🧘 Flexibility & Core Strength</option>
+            </select>
+          </div>
+
+          <!-- Workout Intensity -->
+          <div class="form-group">
+            <label for="intensity"><i class="fa-solid fa-bolt"></i> Workout Intensity</label>
+            <select id="intensity" name="intensity" class="form-control" required>
+              <option value="" disabled {% if not form_data %}selected{% endif %}>Select intensity level</option>
+              <option value="Low" {% if form_data and form_data.intensity == 'Low' %}selected{% endif %}>🟢 Low (Beginner / Light)</option>
+              <option value="Medium" {% if form_data and form_data.intensity == 'Medium' %}selected{% endif %}>🟡 Medium (Intermediate)</option>
+              <option value="High" {% if form_data and form_data.intensity == 'High' %}selected{% endif %}>🔴 High (Advanced / Intense)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-play"></i> Generate Plan
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>FitBuddy &copy; Naan Mudhalvan Project | Powered by Google Gemini AI & FastAPI</p>
+  </footer>
+
+</body>
+</html>

@@ -6,18 +6,28 @@ ENV/
 
 # Environment variables
 .env
+.env.local
 
-# Python bytecode
+# Python bytecode & cache
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
+.cache/
 
 # SQLite database
+fitbuddy.db
 *.db
 *.sqlite
 *.sqlite3
+
+# Logs and temporary files
+*.log
+*.tmp
+temp/
 
 # IDE / Editor files
 .vscode/
 .idea/
 .DS_Store
+

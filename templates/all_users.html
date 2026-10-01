@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Registered Users - FitBuddy</title>
+  <link rel="stylesheet" href="/static/style.css?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand-logo">
+      <div class="brand-icon"><i class="fa-solid fa-dumbbell"></i></div>
+      Fit<span>Buddy</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-btn nav-btn-primary"><i class="fa-solid fa-plus"></i> Generate New Plan</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container" style="max-width: 1300px;">
+    
+    <!-- Header -->
+    <section class="hero" style="text-align: left; margin-bottom: 1.5rem;">
+      <span class="hero-tag"><i class="fa-solid fa-database"></i> SQLite Database Records</span>
+      <h1>Admin Dashboard - Registered Users & Plans</h1>
+      <p>View all stored user profiles, generated 7-day workout routines, nutrition guidance, and updated plans.</p>
+    </section>
+
+    <!-- Table Section -->
+    <section class="glass-card" style="padding: 1.5rem;">
+      {% if users %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 120px;">User Details</th>
+              <th style="width: 110px;">User ID</th>
+              <th style="width: 110px;">Goal</th>
+              <th style="width: 90px;">Intensity</th>
+              <th style="min-width: 260px;">Original Workout Plan</th>
+              <th style="min-width: 260px;">Updated Workout Plan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>
+                <strong style="color: var(--text-main);">{{ user.username }}</strong><br>
+                <span style="color: var(--text-dim); font-size: 0.8rem;">Age: {{ user.age }} | Wt: {{ user.weight }}kg</span>
+              </td>
+              <td>
+                <span style="font-family: monospace; color: var(--primary-accent); font-weight: 700;">{{ user.user_id }}</span>
+              </td>
+              <td>
+                <span class="hero-tag" style="margin: 0; font-size: 0.75rem; padding: 0.2rem 0.6rem;">{{ user.goal }}</span>
+              </td>
+              <td>
+                <span style="font-weight: 600; color: {% if user.intensity == 'High' %}#f87171{% elif user.intensity == 'Medium' %}#fbbf24{% else %}#34d399{% endif %};">
+                  {{ user.intensity }}
+                </span>
+              </td>
+              <td>
+                <div class="plan-preview-box plan-markdown">
+                  {{ user.original_plan_html | safe if user.original_plan_html else user.original_plan }}
+                </div>
+              </td>
+              <td>
+                {% if user.updated_plan %}
+                <div class="plan-preview-box plan-markdown" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05);">
+                  {% if user.feedback %}
+                  <div style="font-size: 0.75rem; color: var(--primary-accent); margin-bottom: 0.4rem; font-style: italic;">
+                    <i class="fa-solid fa-comment"></i> Feedback: "{{ user.feedback }}"
+                  </div>
+                  {% endif %}
+                  {{ user.updated_plan_html | safe if user.updated_plan_html else user.updated_plan }}
+                </div>
+                {% else %}
+                <span style="color: var(--text-dim); font-style: italic; font-size: 0.85rem;">No updated plan submitted</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+        <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+        <p style="font-size: 1.1rem;">No users or plans stored in the database yet.</p>
+        <a href="/" class="nav-btn nav-btn-primary" style="margin-top: 1rem;"><i class="fa-solid fa-plus"></i> Create First Plan</a>
+      </div>
+      {% endif %}
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>FitBuddy &copy; Naan Mudhalvan Project | Powered by Google Gemini AI & FastAPI</p>
+  </footer>
+
+</body>
+</html>
